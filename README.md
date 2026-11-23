@@ -1,6 +1,6 @@
 <h1>ExpNo 5 : Implement Minimax Search Algorithm for a Simple TIC-TAC-TOE game</h1> 
-<h3>Name:           </h3>
-<h3>Register Number/Staff Id:          </h3>
+<h3>Name: Rithanya L </h3>
+<h3>Register Number: 212225040341</h3>
 <H3>Aim:</H3>
 <p>
     Implement Minimax Search Algorithm for a Simple TIC-TAC-TOE game
@@ -102,6 +102,166 @@ def minimax(game)
     end
 end
 
+## PROGRAM
+```
+import time
+
+board = [
+    ['.', '.', '.'],
+    ['.', '.', '.'],
+    ['.', '.', '.']
+]
+
+
+# Display board
+def display():
+    for row in board:
+        print(' | '.join(row))
+    print()
+
+
+# Check winner
+def winner():
+    # Rows and columns
+    for i in range(3):
+        if board[i][0] != '.' and board[i][0] == board[i][1] == board[i][2]:
+            return board[i][0]
+
+        if board[0][i] != '.' and board[0][i] == board[1][i] == board[2][i]:
+            return board[0][i]
+
+    # Diagonals
+    if board[0][0] != '.' and board[0][0] == board[1][1] == board[2][2]:
+        return board[0][0]
+
+    if board[0][2] != '.' and board[0][2] == board[1][1] == board[2][0]:
+        return board[0][2]
+
+    # Check empty space
+    for row in board:
+        if '.' in row:
+            return None
+
+    return 'Tie'
+
+
+# Minimax
+def minimax(is_max):
+    result = winner()
+
+    if result == 'O':
+        return 1
+    if result == 'X':
+        return -1
+    if result == 'Tie':
+        return 0
+
+    if is_max:
+        best = -2
+
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == '.':
+                    board[i][j] = 'O'
+                    score = minimax(False)
+                    board[i][j] = '.'
+
+                    best = max(best, score)
+
+        return best
+
+    else:
+        best = 2
+
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == '.':
+                    board[i][j] = 'X'
+                    score = minimax(True)
+                    board[i][j] = '.'
+
+                    best = min(best, score)
+
+        return best
+
+
+# Find best move for computer
+def best_move():
+    best_score = -2
+    move = (-1, -1)
+
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == '.':
+                board[i][j] = 'O'
+
+                score = minimax(False)
+
+                board[i][j] = '.'
+
+                if score > best_score:
+                    best_score = score
+                    move = (i, j)
+
+    return move
+
+
+# Main game
+def play():
+    print("TIC TAC TOE")
+    print("You = X")
+    print("Computer = O")
+    print("Enter row and column from 0 to 2\n")
+
+    while True:
+        display()
+
+        # Player move
+        while True:
+            x = int(input("Enter row: "))
+            y = int(input("Enter column: "))
+
+            if 0 <= x < 3 and 0 <= y < 3 and board[x][y] == '.':
+                board[x][y] = 'X'
+                break
+
+            print("Invalid move!")
+
+        if winner() == 'X':
+            display()
+            print("You win!")
+            break
+
+        if winner() == 'Tie':
+            display()
+            print("It's a draw!")
+            break
+
+        # Computer move
+        start = time.time()
+
+        x, y = best_move()
+
+        board[x][y] = 'O'
+
+        end = time.time()
+
+        print("Computer chose:", x, y)
+        print("Evaluation time:", round(end - start, 6), "seconds")
+
+        if winner() == 'O':
+            display()
+            print("Computer wins!")
+            break
+
+        if winner() == 'Tie':
+            display()
+            print("It's a draw!")
+            break
+
+
+play()
+```
 <hr>
 <h2>Sample Input and Output</h2>
 
@@ -112,5 +272,13 @@ end
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/a2acb6a1-ed8e-42e5-8968-fe805e4b0255)
 
 <hr>
+
+## OUTPUT 
+
+<img width="390" height="708" alt="image" src="https://github.com/user-attachments/assets/8b50cc24-d432-40ba-bbdc-d6cf4bd4a324" />
+
+
+<img width="483" height="692" alt="image" src="https://github.com/user-attachments/assets/d5d41c91-462a-4f1d-aaf7-9616d752ddc0" />
+
 <h2>Result:</h2>
 <p>Thus,Implementation of  Minimax Search Algorithm for a Simple TIC-TAC-TOE game wasa done successfully.</p>
